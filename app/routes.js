@@ -7,6 +7,11 @@ module.exports = function(app, passport, db, multer, ObjectId, querystring) {
         res.render('index.ejs');
     });
 
+    // show the home page (will also have our login links)
+    app.get('/home', function(req, res) {
+        res.render('home.ejs');
+    });
+
     // PROFILE SECTION =========================
     app.get('/profile', isLoggedIn, function(req, res) {
         db.collection('messages').find().toArray((err, result) => {
@@ -69,103 +74,116 @@ app.get('/test', isLoggedIn, function(req, res) {
         res.send('Message deleted!')
       })
     })
-//---------------------------------------
-// IMAGE CODE
-//---------------------------------------
-var storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-      cb(null, 'public/images/uploads')
-    },
-    filename: (req, file, cb) => {
-      cb(null, file.fieldname + '-' + Date.now() + ".png")
-    }
-});
-var upload = multer({storage: storage});
-
-app.post('/up', upload.single('file-to-upload'), (req, res, next) => {
-
-    insertDocuments(db, req, 'images/uploads/' + req.file.filename, () => {
-        // db.close();
-        // res.json({'message': 'File uploaded successfully'});
-        res.redirect('/profile')
+    //---------------------------------------
+    // IMAGE CODE
+    //---------------------------------------
+    var storage = multer.diskStorage({
+        destination: (req, file, cb) => {
+          cb(null, 'public/images/uploads')
+        },
+        filename: (req, file, cb) => {
+          cb(null, file.fieldname + '-' + Date.now() + ".png")
+        }
     });
-});
+    var upload = multer({storage: storage});
+
+    app.post('/up', upload.single('file-to-upload'), (req, res, next) => {
+
+        insertDocuments(db, req, 'images/uploads/' + req.file.filename, () => {
+            // db.close();
+            // res.json({'message': 'File uploaded successfully'});
+            res.redirect('/profile')
+        });
+    });
 
 
 
-app.get('/photo', isLoggedIn, (req, res) => {
+    app.get('/photo', isLoggedIn, (req, res) => {
 
-  let imageId = req.query.id
+      let imageId = req.query.id
 
-  console.log("id: ", imageId);
+      console.log("id: ", imageId);
 
-db.collection('clip').find().toArray((err, image) => {
-  if (err) return console.log(err)
+    db.collection('clip').find().toArray((err, image) => {
+      if (err) return console.log(err)
 
-  const imgArray= image.map(element => element._id);
+      const imgArray= image.map(element => element._id);
 
-  var filename = req.params.id;
+      var filename = req.params.id;
 
-    console.log("Array: ", imgArray, "Querry: ", imageId);
+        console.log("Array: ", imgArray, "Querry: ", imageId);
 
-    db.collection('clip').findOne({'_id': ObjectId(imageId) }, (err, onePic) => {
+        db.collection('clip').findOne({'_id': ObjectId(imageId) }, (err, onePic) => {
 
-        if (err) return console.log(err)
+            if (err) return console.log(err)
 
-        console.log("picture", onePic);
+            console.log("picture", onePic);
 
 
-      // res.contentType('image/jpeg');
-      // res.send(onePic.image.buffer)
-      // res.send(imgArray)
+          // res.contentType('image/jpeg');
+          // res.send(onePic.image.buffer)
+          // res.send(imgArray)
 
-      res.render('picture.ejs', {
-        user : req.user,
-        picture: onePic,
-        image: image
+          res.render('picture.ejs', {
+            user : req.user,
+            picture: onePic,
+            image: image
+          })
+
+        })
+
       })
-
     })
 
-  })
-})
-
-
-
-app.post('/gallery', upload.single('gallery'), isLoggedIn, (req, res, next) => {
-  let id = req.session.passport.user
-  let image = 'images/uploads/' + req.file.filename
-  console.log("userID: ", id, "Image: ", image);
-  db.collection('clip').save({ userId: id, image: image}, (err, result) => {
-    if (err) return console.log(err)
-    console.log('saved to database')
-    res.redirect('/profile')
-  })
-})
-
-var insertDocuments = function(db, req, filePath, callback) {
-    var collection = db.collection('users');
-    var uId = ObjectId(req.session.passport.user)
-    collection.findOneAndUpdate({"_id": uId}, {
-      $set: {
-        profileImg: filePath
-      }
-    }, {
-      sort: {_id: -1},
-      upsert: false
-    }, (err, result) => {
-      if (err) return res.send(err)
-      callback(result)
+      //saving to hom collection for user's story
+    app.post('/home', upload.single('picture'), (req, res, next) => {
+      // let id = req.session.passport.user
+      let picture = 'images/uploads/' + req.file.filename
+      // "userID: ", id,
+      console.log( "Image: ", image);
+      // userId: id,
+      db.collection('home').save({ title: title, image: picture, story: story}, (err, result) => {
+        if (err) return console.log(err)
+        console.log('saved to database')
+        res.redirect('/profile')
+      })
     })
-    // collection.findOne({"_id": uId}, (err, result) => {
-    //     //{'imagePath' : filePath }
-    //     //assert.equal(err, null);
-    //     callback(result);
-    // });
-}
-//---------------------------------------
-// IMAGE CODE END
-//---------------------------------------
+
+
+    app.post('/gallery', upload.single('gallery'), isLoggedIn, (req, res, next) => {
+      let id = req.session.passport.user
+      let image = 'images/uploads/' + req.file.filename
+      console.log("userID: ", id, "Image: ", image);
+      db.collection('clip').save({ userId: id, image: image}, (err, result) => {
+        if (err) return console.log(err)
+        console.log('saved to database')
+        res.redirect('/profile')
+      })
+    })
+
+    var insertDocuments = function(db, req, filePath, callback) {
+        var collection = db.collection('users');
+        var uId = ObjectId(req.session.passport.user)
+        collection.findOneAndUpdate({"_id": uId}, {
+          $set: {
+            profileImg: filePath
+          }
+        }, {
+          sort: {_id: -1},
+          upsert: false
+        }, (err, result) => {
+          if (err) return res.send(err)
+          callback(result)
+        })
+        // collection.findOne({"_id": uId}, (err, result) => {
+        //     //{'imagePath' : filePath }
+        //     //assert.equal(err, null);
+        //     callback(result);
+        // });
+    }
+    //---------------------------------------
+    // IMAGE CODE END
+    //---------------------------------------
 
 // =============================================================================
 // AUTHENTICATE (FIRST LOGIN) ==================================================

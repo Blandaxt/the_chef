@@ -5,6 +5,7 @@
 header nav ul li section a > h2{
   font-family: 'Risque', cursive;
   font-size: 3rem;
+  color: orange;
 }
 
 header nav ul li section > a{
@@ -57,6 +58,32 @@ header nav ul li > section:nth-child(2){
   margin-top: 7%;
 }
 
+label{
+  display: block;
+}
+
+figure{
+  border-radius: 2%;
+  border: thin #c0c0c0 solid;
+  display: flex;
+  flex-flow: column;
+  padding: 1%;
+  margin: auto;
+}
+
+form{
+  text-align: left;
+  padding: 3%;
+}
+
+form section{
+  margin-top: 2%;
+}
+
+form input[type="submit"]{
+  margin-top: 2%;
+}
+
 .border{
   border: 2px solid black;
 }
@@ -79,13 +106,41 @@ header nav ul li > section:nth-child(2){
   border-color: #ffffff;
 }
 
+.flexIt{
+  display: flex;
+  flex-flow: column nowrap;
+  /* align-items is up and down */
+   align-items: center;
+   /* justify-content is side to side */
+   justify-content: center;
+  padding: 0 2%;
+}
+
+.story{
+  border-radius: 2%;
+  margin-top: 3%;
+  text-align: center;
+  padding: 2%;
+}
+
+.story h1{
+  margin: 1%;
+}
+
+.story p{
+  margin: 1%;
+  text-align: left;
+  padding: 0.1%;
+  border-radius: 2%;
+}
+
 /* Cell phone view */
 
 /* @media only screen
   and (min-width: 320px)
   and (max-width: 480px){} */
 
-@media only screen and (min-width: 500px) and (max-width: 650px){
+@media only screen and (min-width: 500px) and (max-width: 688px){
 
   .icon{
     display: block;
@@ -109,11 +164,28 @@ header nav ul li > section:nth-child(2){
 
 /* Tablet view */
 
-@media only screen and (min-width: 651px) and (max-width: 800px){
+@media only screen and (min-width: 689px) and (max-width: 840px){
 
   header nav ul li section a > h2{
 
-        font-size: 25px;
+        font-size: 16px;
+
+  }
+
+  header nav ul li a > button {
+
+    font-size: 12px;
+
+  }
+
+}
+
+/* Laptop view */
+@media only screen and (min-width: 841px) and (max-width: 1216px) {
+
+  header nav ul li section a > h2 {
+
+    font-size: 2rem;
 
   }
 

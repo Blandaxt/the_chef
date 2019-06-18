@@ -8,14 +8,35 @@ module.exports = function(app, passport, db, multer, ObjectId, querystring) {
     // });
 
     // show the home page (will also have our login links)
-    app.get('/', function(req, res) {
-        res.render('home.ejs');
+  app.get('/', function(req, res) {
+      db.collection('home').find().toArray((err, result) => {
+        if (err) return console.log(err)
+
+        // loging the returned object
+        console.log(result);
+
+        // db.collection('clip').find().toArray((err, image) => {
+        //   if (err) return console.log(err)
+
+          res.render('home.ejs', {
+            userExperience: result,
+            isAuthenticated: req.isAuthenticated()
+            // image: image
+          })
+
+
+        // })
+
+      })
     });
 
       //home page after the user logs in (also has sign out link)
     app.get('/home', isLoggedIn, function(req, res) {
         db.collection('home').find().toArray((err, result) => {
           if (err) return console.log(err)
+
+          // loging the returned object
+          console.log(result);
 
           // db.collection('clip').find().toArray((err, image) => {
           //   if (err) return console.log(err)
@@ -164,7 +185,7 @@ app.get('/test', isLoggedIn, function(req, res) {
       db.collection('home').save({userId: id, title: req.body.title, picture: picture, story: req.body.story}, (err, result) => {
         if (err) return console.log(err)
         console.log('saved to database')
-        res.redirect('/profile')
+        res.redirect('/home')
       })
     })
 
@@ -238,7 +259,8 @@ app.get('/test', isLoggedIn, function(req, res) {
         // Loging out the user
         app.get('/logout', function(req, res){
           req.logout();
-          req.session.destroy();
+          req.session.destroy().next();
+          console.log("I'm Logged Out!");
           res.redirect('/');
         });
 

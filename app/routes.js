@@ -23,6 +23,7 @@ module.exports = function(app, passport, db, multer, ObjectId, querystring) {
             res.render('home.ejs', {
               user : req.user,
               userExperience: result,
+              isAuthenticated: req.isAuthenticated()
               // image: image
             })
 
@@ -262,8 +263,11 @@ app.get('/test', isLoggedIn, function(req, res) {
 
 // route middleware to ensure user is logged in
 function isLoggedIn(req, res, next) {
-    if (req.isAuthenticated())
-        return next();
+    if (req.isAuthenticated()) {
+      console.log("I'm logged in!");
+      return next();
+    }
+        // return next();
 
     res.redirect('/');
 }

@@ -25,6 +25,8 @@ header nav ul li a > button {
   background-color: #ffa500ed;
   padding: 1% 5%;
   font-size: 16px;
+  border: none;
+  font-family: 'Risque', cursive;
 }
 
   /* Flex box  */
@@ -39,7 +41,6 @@ header nav ul{
 
 header nav ul > li{
   list-style: none;
-  display: inline-block;
   margin: 1% 2%;
   text-align: center;
   padding: 1%;
@@ -62,6 +63,20 @@ header nav ul li > section:nth-child(2){
 
 .icon{
   display: none;
+}
+
+.auth{
+  padding-top: 2%;
+}
+
+.auth a {
+    background-color: #ffa600;
+}
+
+.auth a:hover{
+  box-shadow: -3px 0px 7px 1px #ffa50080;
+  background-color: #ffa500;
+  border-color: #ffffff;
 }
 
 /* Cell phone view */

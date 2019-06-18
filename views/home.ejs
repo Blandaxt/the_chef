@@ -33,7 +33,9 @@
 
             <section class="border">
 
-              <a href="#"><h2>Home</h2></a>
+              <a href="/home">
+                <h2>Home</h2>
+              </a>
 
             </section>
 
@@ -53,7 +55,9 @@
 
             <section class="border">
 
-              <a href="#"><h2>Recipes</h2></a>
+              <a href="#">
+                <h2>Recipes</h2>
+              </a>
 
             </section>
 
@@ -67,72 +71,111 @@
 
           </li>
 
-          <li class="border remove">
-            <!-- #3 -->
+          <!-- if the user is logged in, this will show -->
+          <% if (isAuthenticated) { %>
 
-            <section class="border">
+            <li class="border remove">
+              <!-- #3 -->
 
-              <a href="#"><h2>Profile</h2></a>
+              <section class="border">
 
-            </section>
+                <a href="#">
+                  <h2>Profile</h2>
+                </a>
 
-            <!-- SVG cooking pot -->
-            <section class="border">
+              </section>
 
-              <!-- link to svg site https://www.svgrepo.com/ -->
-              <img src="img/cookingPot-svgrepo-com.svg" alt="cooking pot">
+              <!-- SVG cooking pot -->
+              <section class="border">
 
-            </section>
+                <!-- link to svg site https://www.svgrepo.com/ -->
+                <img src="img/cookingPot-svgrepo-com.svg" alt="cooking pot">
 
-          </li>
+              </section>
 
-          <li class="border remove">
-            <!-- #4 -->
+            </li>
 
-            <section class="border">
+            <li class="border remove">
+              <!-- #4 -->
 
-              <a href="#"><h2>Creations</h2></a>
+              <section class="border">
 
-            </section>
+                <a href="#">
+                  <h2>Creations</h2>
+                </a>
 
-            <!-- SVG cooking pot -->
-            <section class="border">
+              </section>
 
-              <!-- link to svg site https://www.svgrepo.com/ -->
-              <img src="img/cookingPot-svgrepo-com.svg" alt="cooking pot">
+              <!-- SVG cooking pot -->
+              <section class="border">
 
-            </section>
+                <!-- link to svg site https://www.svgrepo.com/ -->
+                <img src="img/cookingPot-svgrepo-com.svg" alt="cooking pot">
+
+              </section>
+
+            </li>
+
+            <li class="border">
+
+              <a href="/logout">
+                <button type="button" name="sign out">Sign Out
+                </button>
+              </a>
+
+            </li>
+
+          <% } else { %>
+
+            <!-- Else the login and sign up will show -->
+          <li class="border">
+
+            <a href="/login" class="btn btn-default">
+              <button type="button" name="sign out">
+                <span class="fa fa-user"></span> Login
+              </button>
+            </a>
 
           </li>
 
           <li class="border">
 
-            <a href="#"><button type="button" name="sign out">Sign Out</button></a>
+            <a href="/signup" class="btn btn-default">
+              <button type="button" name="sign out"><span class="fa fa-user"></span> Signup
+              </button>
+            </a>
 
           </li>
+
+          <% } %>
 
         </ul>
 
       </nav>
 
-      <section class="border">
+      <% if (isAuthenticated) { %>
 
-        <form class="border" enctype="multipart/form-data" action="/home" method="post">
+        <section class="border">
 
-          <label for="title">Title</label>
-          <input id="title" type="text" name="title" value="" placeholder="Title">
+          <form class="border" enctype="multipart/form-data" action="/home" method="post">
 
-          <label for="pic">Upload a picture</label>
-          <input id="pic" type="file" name="picture" placeholder="">
+            <label for="title">Title</label>
+            <input id="title" type="text" name="title" value="" placeholder="Title">
 
-          <label for="description">Describe your Experience</label>
-          <input id="description" type="text" name="story" value="" placeholder="Your Story">
+            <label for="pic">Upload a picture</label>
+            <input id="pic" type="file" name="picture" placeholder="Choose a picture">
 
-          <input type="submit" value="Upload">
+            <label for="description">Describe your Experience</label>
+            <textarea id="description" name="story" rows="5" cols="33" placeholder="Your Story" spellcheck="true" wrap="
+            " minlength="10" maxlength="10000" autocomplete="on"></textarea>
 
-        </form>
+            <input type="submit" value="Upload">
 
-      </section>
+          </form>
+
+        </section>
+
+      <% } %>
 
     </header>
 

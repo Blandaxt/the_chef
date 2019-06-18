@@ -3,13 +3,33 @@ module.exports = function(app, passport, db, multer, ObjectId, querystring) {
 // normal routes ===============================================================
 
     // show the home page (will also have our login links)
-    app.get('/', function(req, res) {
-        res.render('index.ejs');
-    });
+    // app.get('/', function(req, res) {
+    //     res.render('index.ejs');
+    // });
 
     // show the home page (will also have our login links)
-    app.get('/home', function(req, res) {
+    app.get('/', function(req, res) {
         res.render('home.ejs');
+    });
+
+      //home page after the user logs in (also has sign out link)
+    app.get('/home', isLoggedIn, function(req, res) {
+        db.collection('home').find().toArray((err, result) => {
+          if (err) return console.log(err)
+
+          // db.collection('clip').find().toArray((err, image) => {
+          //   if (err) return console.log(err)
+
+            res.render('home.ejs', {
+              user : req.user,
+              userExperience: result,
+              // image: image
+            })
+
+
+          // })
+
+        })
     });
 
     // PROFILE SECTION =========================
@@ -97,7 +117,7 @@ app.get('/test', isLoggedIn, function(req, res) {
     });
 
 
-
+    // Loading one image so the user can view one picture at a time
     app.get('/photo', isLoggedIn, (req, res) => {
 
       let imageId = req.query.id
@@ -136,13 +156,11 @@ app.get('/test', isLoggedIn, function(req, res) {
     })
 
       //saving to hom collection for user's story
-    app.post('/home', upload.single('picture'), (req, res, next) => {
-      // let id = req.session.passport.user
+    app.post('/home', upload.single('picture'), isLoggedIn, (req, res, next) => {
+      let id = req.session.passport.user
       let picture = 'images/uploads/' + req.file.filename
-      // "userID: ", id,
-      console.log( "Image: ", image);
-      // userId: id,
-      db.collection('home').save({ title: title, image: picture, story: story}, (err, result) => {
+      console.log("userID: ", id, "Image: ", picture);
+      db.collection('home').save({userId: id, title: req.body.title, picture: picture, story: req.body.story}, (err, result) => {
         if (err) return console.log(err)
         console.log('saved to database')
         res.redirect('/profile')
@@ -198,7 +216,7 @@ app.get('/test', isLoggedIn, function(req, res) {
 
         // process the login form
         app.post('/login', passport.authenticate('local-login', {
-            successRedirect : '/profile', // redirect to the secure profile section
+            successRedirect : '/home', // redirect to the secure profile section
             failureRedirect : '/login', // redirect back to the signup page if there is an error
             failureFlash : true // allow flash messages
         }));
@@ -211,10 +229,17 @@ app.get('/test', isLoggedIn, function(req, res) {
 
         // process the signup form
         app.post('/signup', passport.authenticate('local-signup', {
-            successRedirect : '/profile', // redirect to the secure profile section
+            successRedirect : '/home', // redirect to the secure profile section
             failureRedirect : '/signup', // redirect back to the signup page if there is an error
             failureFlash : true // allow flash messages
         }));
+
+        // Loging out the user
+        app.get('/logout', function(req, res){
+          req.logout();
+          req.session.destroy();
+          res.redirect('/');
+        });
 
 // =============================================================================
 // UNLINK ACCOUNTS =============================================================
@@ -229,7 +254,7 @@ app.get('/test', isLoggedIn, function(req, res) {
         user.local.email    = undefined;
         user.local.password = undefined;
         user.save(function(err) {
-            res.redirect('/profile');
+            res.redirect('/home');
         });
     });
 

@@ -164,75 +164,8 @@
 
       </nav>
 
-      <% if (isAuthenticated) { %>
-
-        <section class="border">
-
-          <form class="border" enctype="multipart/form-data" action="/home" method="post">
-
-            <section class="border">
-
-              <label for="title">Title</label>
-              <input id="title" type="text" name="title" value="" placeholder="Title">
-
-            </section>
-
-            <section class="border">
-
-              <label for="pic">Upload a picture</label>
-              <input id="pic" type="file" name="picture" placeholder="Choose a picture">
-
-            </section>
-
-            <section class="border">
-
-              <label for="description">Describe your Experience</label>
-              <textarea id="description" name="story" rows="5" cols="33" placeholder="Your Story" spellcheck="true" wrap="
-              " minlength="10" maxlength="10000" autocomplete="on"></textarea>
-
-            </section>
-
-            <input type="submit" value="Upload">
-
-          </form>
-
-        </section>
-
-      <% } %>
-
     </header>
 
-    <section class="line1">
-
-    </section>
-
-    <main class="border flexIt">
-
-      <% for(let i = 0; i < userExperience.length; i++){ %>
-
-        <section class="border story">
-
-          <h1 class="border"><%= userExperience[i].title %></h1>
-
-          <section class="border">
-
-            <figure class="border">
-
-              <img src="<%= userExperience[i].picture %>" alt="picture"/>
-
-            </figure>
-
-          </section>
-
-          <p class="border"><%= userExperience[i].story %></p>
-
-        </section>
-
-      <% } %>
-
-    </main>
-
-    <script src="js/home.js" type="text/javascript"></script>
-
   </body>
+
 </html>

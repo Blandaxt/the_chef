@@ -7,28 +7,28 @@ module.exports = function(app, passport, db, multer, ObjectId, querystring) {
     //     res.render('index.ejs');
     // });
 
-    // show the home page (will also have our login links)
-  app.get('/', function(req, res) {
-      db.collection('home').find().toArray((err, result) => {
-        if (err) return console.log(err)
+      // show the home page (will also have our login links)
+    app.get('/', function(req, res) {
+        db.collection('home').find().toArray((err, result) => {
+          if (err) return console.log(err)
 
-        // loging the returned object
-        console.log(result);
+          // loging the returned object
+          console.log(result);
 
-        // db.collection('clip').find().toArray((err, image) => {
-        //   if (err) return console.log(err)
+          // db.collection('clip').find().toArray((err, image) => {
+          //   if (err) return console.log(err)
 
-          res.render('home.ejs', {
-            userExperience: result,
-            isAuthenticated: req.isAuthenticated()
-            // image: image
-          })
+            res.render('home.ejs', {
+              userExperience: result,
+              isAuthenticated: req.isAuthenticated()
+              // image: image
+            })
 
 
-        // })
+          // })
 
-      })
-    });
+        })
+      });
 
       //home page after the user logs in (also has sign out link)
     app.get('/home', isLoggedIn, function(req, res) {
@@ -54,6 +54,81 @@ module.exports = function(app, passport, db, multer, ObjectId, querystring) {
         })
     });
 
+      // show the home page (will also have our login links)
+    app.get('/recipe', function(req, res) {
+        db.collection('home').find().toArray((err, result) => {
+          if (err) return console.log(err)
+
+          // loging the returned object
+          console.log(result);
+
+          // db.collection('clip').find().toArray((err, image) => {
+          //   if (err) return console.log(err)
+
+            res.render('recipes.ejs', {
+              userExperience: result,
+              isAuthenticated: req.isAuthenticated()
+              // image: image
+            })
+
+
+          // })
+
+        })
+      });
+
+      //home page after the user logs in (also has sign out link)
+    app.get('/profileChef', isLoggedIn, function(req, res) {
+        db.collection('home').find().toArray((err, result) => {
+          if (err) return console.log(err)
+
+          // loging the returned object
+          console.log(result);
+
+          // db.collection('clip').find().toArray((err, image) => {
+          //   if (err) return console.log(err)
+
+            res.render('profileChef.ejs', {
+              user : req.user,
+              userExperience: result,
+              isAuthenticated: req.isAuthenticated()
+              // image: image
+            })
+
+
+          // })
+
+        })
+    });
+
+      //home page after the user logs in (also has sign out link)
+    app.get('/creations', isLoggedIn, function(req, res) {
+        db.collection('home').find().toArray((err, result) => {
+          if (err) return console.log(err)
+
+          // loging the returned object
+          console.log(result);
+
+          // db.collection('clip').find().toArray((err, image) => {
+          //   if (err) return console.log(err)
+
+            res.render('creations.ejs', {
+              user : req.user,
+              userExperience: result,
+              isAuthenticated: req.isAuthenticated()
+              // image: image
+            })
+
+
+          // })
+
+        })
+    });
+
+
+
+
+    // DUE TO BE DELETE ************************************************
     // PROFILE SECTION =========================
     app.get('/profile', isLoggedIn, function(req, res) {
         db.collection('messages').find().toArray((err, result) => {
@@ -73,6 +148,7 @@ module.exports = function(app, passport, db, multer, ObjectId, querystring) {
 
         })
     });
+    // DUE TO BE DELETE ************************************************
 
 
     // LOGOUT ==============================
@@ -82,11 +158,12 @@ module.exports = function(app, passport, db, multer, ObjectId, querystring) {
     });
 
 //Test =========================================================================
-app.get('/test', isLoggedIn, function(req, res) {
-    console.log(req.session.passport.user)
-});
+    app.get('/test', isLoggedIn, function(req, res) {
+        console.log(req.session.passport.user)
+    });
 // message board routes ========================================================
 
+    // DUE TO BE DELETE ************************************************
     app.post('/messages', (req, res) => {
       db.collection('messages').save({name: req.body.name, msg: req.body.msg, thumbUp: 0, thumbDown:0}, (err, result) => {
         if (err) return console.log(err)
@@ -94,7 +171,9 @@ app.get('/test', isLoggedIn, function(req, res) {
         res.redirect('/profile')
       })
     })
+    // DUE TO BE DELETE ************************************************
 
+    // DUE TO BE DELETE ************************************************
     app.put('/messages', (req, res) => {
       db.collection('messages')
       .findOneAndUpdate({name: req.body.name, msg: req.body.msg}, {
@@ -109,13 +188,16 @@ app.get('/test', isLoggedIn, function(req, res) {
         res.send(result)
       })
     })
+    // DUE TO BE DELETE ************************************************
 
+    // DUE TO BE DELETE ************************************************
     app.delete('/messages', (req, res) => {
       db.collection('messages').findOneAndDelete({name: req.body.name, msg: req.body.msg}, (err, result) => {
         if (err) return res.send(500, err)
         res.send('Message deleted!')
       })
     })
+    // DUE TO BE DELETE ************************************************
     //---------------------------------------
     // IMAGE CODE
     //---------------------------------------
@@ -139,6 +221,7 @@ app.get('/test', isLoggedIn, function(req, res) {
     });
 
 
+    // DUE TO BE DELETE ************************************************
     // Loading one image so the user can view one picture at a time
     app.get('/photo', isLoggedIn, (req, res) => {
 
@@ -176,6 +259,7 @@ app.get('/test', isLoggedIn, function(req, res) {
 
       })
     })
+    // DUE TO BE DELETE ************************************************
 
       //saving to hom collection for user's story
     app.post('/home', upload.single('picture'), isLoggedIn, (req, res, next) => {
@@ -189,7 +273,7 @@ app.get('/test', isLoggedIn, function(req, res) {
       })
     })
 
-
+    // DUE TO BE DELETE ************************************************
     app.post('/gallery', upload.single('gallery'), isLoggedIn, (req, res, next) => {
       let id = req.session.passport.user
       let image = 'images/uploads/' + req.file.filename
@@ -200,6 +284,7 @@ app.get('/test', isLoggedIn, function(req, res) {
         res.redirect('/profile')
       })
     })
+    // DUE TO BE DELETE ************************************************
 
     var insertDocuments = function(db, req, filePath, callback) {
         var collection = db.collection('users');
@@ -271,25 +356,25 @@ app.get('/test', isLoggedIn, function(req, res) {
 // for local account, remove email and password
 // user account will stay active in case they want to reconnect in the future
 
-    // local -----------------------------------
-    app.get('/unlink/local', isLoggedIn, function(req, res) {
-        var user            = req.user;
-        user.local.email    = undefined;
-        user.local.password = undefined;
-        user.save(function(err) {
-            res.redirect('/home');
+      // local -----------------------------------
+      app.get('/unlink/local', isLoggedIn, function(req, res) {
+          var user            = req.user;
+          user.local.email    = undefined;
+          user.local.password = undefined;
+          user.save(function(err) {
+              res.redirect('/home');
+          });
         });
-    });
 
-};
+      };
 
 // route middleware to ensure user is logged in
-function isLoggedIn(req, res, next) {
-    if (req.isAuthenticated()) {
-      console.log("I'm logged in!");
-      return next();
-    }
-        // return next();
+      function isLoggedIn(req, res, next) {
+          if (req.isAuthenticated()) {
+            console.log("I'm logged in!");
+            return next();
+          }
+              // return next();
 
-    res.redirect('/');
-}
+          res.redirect('/');
+      }

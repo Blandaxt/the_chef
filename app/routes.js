@@ -1,4 +1,4 @@
-module.exports = function(app, passport, db, multer, ObjectId, querystring) {
+module.exports = function(app, passport, db, multer, ObjectId, querystring, request) {
 
 // normal routes ===============================================================
 
@@ -76,6 +76,50 @@ module.exports = function(app, passport, db, multer, ObjectId, querystring) {
 
         })
       });
+
+      // APi Data Call ####################
+        // show the home page (will also have our login links)
+
+        // fetch(`./search?search=${food}`)
+
+      app.get('/search', function(req, res) {
+           let search = req.query.search;
+
+
+               // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+               // Api Call Start
+               // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+               const options = {
+               url: `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/search?cuisine=american&diet=vegetarian&excludeIngredients=meat&intolerances=soy&number=50&offset=0&type=main+course&query=${search}`,
+               method: 'GET',
+               headers: {
+                   'Accept': 'application/json',
+                   'Accept-Charset': 'utf-8',
+                   "X-RapidAPI-Host": "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com",
+                   "X-RapidAPI-Key": process.env.API_KEY
+                     }
+                   };
+
+                   let json = null;
+
+               request.get(options, function(err, res, body) {
+                   json = JSON.parse(body);
+                   console.log(json);
+                 });
+
+                 // res.send(json);
+                 res.render('recipes.ejs', {
+                       recipes: json,
+                       isAuthenticated: req.isAuthenticated()
+                     })
+
+                 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                 // Api Call End
+                 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+          });
+
 
       //home page after the user logs in (also has sign out link)
     app.get('/profileChef', isLoggedIn, function(req, res) {
@@ -309,20 +353,6 @@ module.exports = function(app, passport, db, multer, ObjectId, querystring) {
     //---------------------------------------
     // IMAGE CODE END
     //---------------------------------------
-
-    // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    // Api Call Start
-    // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-    const request = require('request');
-
-    request.get('http://stackabuse.com', function(err, res, body) {
-        console.log(body);
-      });
-
-      // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-      // Api Call End
-      // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 // =============================================================================
 // AUTHENTICATE (FIRST LOGIN) ==================================================

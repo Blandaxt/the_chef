@@ -8,6 +8,7 @@ if( process.env.NODE_ENV !== "production" ){require('dotenv').config()}
 
 const querystring = require('querystring');
 var express  = require('express');
+const request = require('request');
 var app      = express();
 var port     = process.env.PORT || 8080;
 var mongoose = require('mongoose');
@@ -34,7 +35,7 @@ mongoose.set('useCreateIndex', true);
 mongoose.connect(configDB.url, { auth: configDB.auth }, (err, database) => {
   if (err) return console.log(err)
   db = database
-  require('./app/routes.js')(app, passport, db, multer, ObjectId, querystring);
+  require('./app/routes.js')(app, passport, db, multer, ObjectId, querystring, request);
 }); // connect to our database
 
 

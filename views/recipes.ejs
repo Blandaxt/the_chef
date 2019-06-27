@@ -9,6 +9,7 @@
     <script src="https://kit.fontawesome.com/5e97e75888.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Risque&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/home.css">
+    <link rel="stylesheet" href="css/recipe.css">
   </head>
   <body>
 
@@ -165,6 +166,58 @@
       </nav>
 
     </header>
+
+    <section class="line1"></section>
+
+    <section class="border search">
+
+      <section class="border">
+
+        <input id="search" type="text" name="" value="" placeholder="Enter a Menu Title ....." autocomplete="on">
+
+      </section>
+
+      <section class="border">
+
+        <button id="look" type="button" name="button"><i class="fas fa-search"></i></button>
+
+      </section>
+
+    </section>
+
+    <main class="border flexIt">
+
+      <% if (recipes.results.length !== undefined) { %>
+
+        <% for(let i = 0; i < recipes.results.length; i++){ %>
+
+          <section class="border leftSide">
+
+            <section class="border">
+
+              <figure class="border">
+
+                <img src="<%= "https://spoonacular.com/recipeImages/" + recipes.results[i].id + "-556x370.jpg" %>" alt="picture"/>
+
+              </figure>
+
+            </section>
+
+            <section class="description border">
+
+              <h1 class="border"><%= recipes.results[i].title %></h1>
+
+              <p class="border"><%= recipes.results[i].readyInMinutes %></p>
+
+            </section>
+
+          </section>
+
+        <% } %>
+
+      <% } %>
+
+    </main>
 
     <script src="js/recipes.js" type="text/javascript"></script>
 

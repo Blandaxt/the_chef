@@ -1,0 +1,138 @@
+*{
+  box-sizing: border-box;
+}
+.search{
+  display: flex;
+  justify-content: center;
+}
+
+.search section{
+  padding: 1%;
+}
+
+.search section input{
+  padding: 1% 4%;
+  text-align: left;
+  font-size: 25px;
+  margin: 1%;
+  border-radius: 26px;
+  width: 502px;
+  font-family: 'Risque', cursive;
+  border: thin solid #d090859c;
+  background-color: #d090859c;
+  color: #a93030;
+}
+
+.search section button{
+  border: none;
+  font-size: 30px;
+  color: brown;
+  background-color: #e0774e36;
+  border-radius: 40px;
+}
+
+.leftSide{
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: center;
+  padding: 2%;
+  border-radius: 25px;
+  margin-top: 3%;
+  background-color: red;
+  color: brown;
+  border: thin solid red;
+  width: 71%
+}
+
+.leftSide section figure img {
+    object-fit: cover;
+    max-height: 400px;
+    width: 100%;
+}
+
+.leftSide section h1{
+  margin: 1%;
+  font-family: 'Risque', cursive;
+  color: orange;
+  text-align: center;
+}
+
+.leftSide p{
+  margin: 1%;
+  text-align: left;
+  padding: 0.1%;
+  border-radius: 2%;
+  font-family: 'Risque', cursive;
+  color: brown;
+  font-size: 2rem;
+}
+
+/* Cell phone view */
+
+/* @media only screen
+  and (min-width: 320px)
+  and (max-width: 480px){} */
+
+@media only screen and (min-width: 500px) and (max-width: 704px){
+
+  .search section input{
+
+      width: 300px;
+      font-size: 18px;
+
+  }
+
+  .search section button{
+
+      font-size: 23px;
+
+  }
+
+}
+
+/* Tablet view */
+
+@media only screen and (min-width: 705px) and (max-width: 850px){
+
+  .search section input{
+
+      width: 350px;
+      font-size: 20px;
+
+  }
+
+  .search section button{
+
+      font-size: 25px;
+
+  }
+
+}
+
+
+/* Laptop view */
+@media only screen and (min-width: 851px) and (max-width: 1041px){
+
+  .search section input{
+
+      width: 400px;
+      font-size: 22px;
+
+  }
+
+  .search section button{
+
+      font-size: 28px;
+
+  }
+
+}
+
+/* Desktop view */
+
+@media only screen and (min-width: 1042px) and (max-width: 1230px) {
+
+
+
+}

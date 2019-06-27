@@ -146,16 +146,16 @@ module.exports = function(app, passport, db, multer, ObjectId, querystring, requ
 
                    let json = null;
 
-               request.get(options, function(err, res, body) {
+               request.get(options, function(err, response, body) {
                    json = JSON.parse(body);
                    console.log(json);
-                 });
 
-                 // res.send(json);
-                 res.render('recipes.ejs', {
-                       recipes: json,
-                       isAuthenticated: req.isAuthenticated()
-                     })
+                   // res.send(json);
+                   res.render('recipes.ejs', {
+                         recipes: json,
+                         isAuthenticated: req.isAuthenticated()
+                       })
+                 });
 
                  // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
                  // Api Call End

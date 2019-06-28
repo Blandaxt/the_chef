@@ -9,6 +9,8 @@ window.addEventListener('load', (event) => {
 
 let startSearch = document.getElementById("look")
 
+let moreInfo = document.getElementById("info")
+
 let userInput
 
 function fetchValue(){
@@ -17,12 +19,36 @@ function fetchValue(){
 
   console.log("search: ", userInput);
 
-  fetch(`./search?search=${userInput}`)
+  window.location.href = `/search?search=${userInput}`
 
+  // fetch(`/search?search=${userInput}`)
 
 }
 
+function getMoreInfo(){
+
+  let picture = moreInfo.getAttribute("data-picture")
+
+  let objectId = moreInfo.getAttribute("data-id")
+
+  console.log("picture source: ", picture, "id: ", objectId)
+
+  localStorage.setItem('recipe', picture)
+
+  // /summary?id=<%= recipes.results[i].id %>
+
+  window.location.href = `/summary?id=${objectId}`
+
+  // fetch(`/summary?id=${objectId}`)
+}
+
+
+
 startSearch.addEventListener("click", fetchValue)
+
+moreInfo.addEventListener("click", getMoreInfo)
+
+
 
 // const request = ``
 //

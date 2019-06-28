@@ -56,21 +56,13 @@ module.exports = function(app, passport, db, multer, ObjectId, querystring, requ
 
       // show the home page (will also have our login links)
     app.get('/recipe', async function(req, res) {
-        // db.collection('home').find().toArray((err, result) => {
-        //   if (err) return console.log(err)
-
-          // loging the returned object
-          // console.log(result);
-
-          // db.collection('clip').find().toArray((err, image) => {
-          //   if (err) return console.log(err)
 
           // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
           // Api Call Start
           // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
           const options = {
-          url: `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/search?diet=vegetarian&excludeIngredients=coconut&intolerances=egg%2C+gluten&number=10&offset=0&type=main+course&query=chicken`,
+          url: `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/search?diet=vegetarian&excludeIngredients=coconut&intolerances=egg%2C+gluten&number=0&offset=0&type=main+course&query=chicken`,
           method: 'GET',
           headers: {
               'Accept': 'application/json',
@@ -82,43 +74,20 @@ module.exports = function(app, passport, db, multer, ObjectId, querystring, requ
 
               let json = null;
 
-           request.get(options, function(err, response, body) {
-              json = JSON.parse(body);
+              request.get(options, function(err, response, body) {
+                json = JSON.parse(body);
 
-              let id = json.results.map( object => object.id )
-
-              let summary = []
-
-              for(let i = 0; i < id.length; i++){
-
-              unirest.get(`https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/${id[i]}/summary`)
-                .header("X-RapidAPI-Host", "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com")
-                .header("X-RapidAPI-Key", "3b9cef5eb9msh67190bd6115d508p1d9459jsna3090c8e884c")
-                .end(function (result) {
-                  summary.push(result)
-                  console.log(result.status, result.headers, result.body, "summary in the loop: ", summary);
-                });
-
-              }
-
-              console.log("javascript Object Notation: ", json, "id: ", id, "summary: ", summary);
+              console.log("javascript Object Notation: ", json, "limit: ", response.headers);
 
               res.render('recipes.ejs', {
                      recipes: json,
-                     recipeDescription: summary,
+                     // recipeDescription: arraySummary,
                      isAuthenticated: req.isAuthenticated()
                    })
 
+                })
+
             });
-
-            // res.send(json);
-
-
-
-          // })
-
-        // })
-      });
 
       // APi Data Call ####################
         // show the home page (will also have our login links)
@@ -128,13 +97,17 @@ module.exports = function(app, passport, db, multer, ObjectId, querystring, requ
       app.get('/search', function(req, res) {
            let search = req.query.search;
 
+              console.log("query: ", search);
+
+                // let id = json.results.map( object => object.id )
+
 
                // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
                // Api Call Start
                // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
                const options = {
-               url: `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/search?cuisine=american&diet=vegetarian&excludeIngredients=meat&intolerances=soy&number=50&offset=0&type=main+course&query=${search}`,
+               url: `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/search?cuisine=american&diet=vegetarian&excludeIngredients=meat&intolerances=soy&number=1&offset=0&type=main+course&query=${search}`,
                method: 'GET',
                headers: {
                    'Accept': 'application/json',
@@ -162,6 +135,32 @@ module.exports = function(app, passport, db, multer, ObjectId, querystring, requ
                  // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
           });
+
+      // grabbing one summary with other information
+    app.get("/summary", function(req, res) {
+
+      let clickOne = req.query.id
+
+      console.log("search id: ", clickOne);
+
+      unirest.get(`https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/${clickOne}/summary`)
+        .header("X-RapidAPI-Host", "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com")
+        .header("X-RapidAPI-Key", "3b9cef5eb9msh67190bd6115d508p1d9459jsna3090c8e884c")
+        .end(function (result) {
+
+          console.log(result.status, result.headers,"summary Information: ", result.body);
+
+
+          res.render('summary.ejs', {
+                summary: result.body,
+                isAuthenticated: req.isAuthenticated()
+              })
+
+        })
+
+
+
+    });
 
 
       //home page after the user logs in (also has sign out link)

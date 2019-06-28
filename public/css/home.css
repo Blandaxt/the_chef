@@ -88,9 +88,9 @@ form input[type="submit"]{
   margin-top: 2%;
 }
 
-.border{
+/* .border{
   border: 2px solid black;
-}
+} */
 
 .icon{
   display: none;

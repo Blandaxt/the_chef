@@ -9,7 +9,6 @@
     <script src="https://kit.fontawesome.com/5e97e75888.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Risque&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/home.css">
-    <link rel="stylesheet" href="css/recipe.css">
   </head>
   <body>
 
@@ -165,60 +164,75 @@
 
       </nav>
 
+      <% if (isAuthenticated) { %>
+
+        <section class="border">
+
+          <form class="border" enctype="multipart/form-data" action="/home" method="post">
+
+            <section class="border">
+
+              <label for="title">Title</label>
+              <input id="title" type="text" name="title" value="" placeholder="Title">
+
+            </section>
+
+            <section class="border">
+
+              <label for="pic">Upload a picture</label>
+              <input id="pic" type="file" name="picture" placeholder="Choose a picture">
+
+            </section>
+
+            <section class="border">
+
+              <label for="description">Describe your Experience</label>
+              <textarea id="description" name="story" rows="5" cols="33" placeholder="Your Story" spellcheck="true" wrap="
+              " minlength="10" maxlength="10000" autocomplete="on"></textarea>
+
+            </section>
+
+            <input type="submit" value="Upload">
+
+          </form>
+
+        </section>
+
+      <% } %>
+
     </header>
 
-    <section class="line1"></section>
-
-    <section class="border search">
-
-      <section class="border">
-
-        <input id="search" type="text" name="" value="" placeholder="Enter a Menu Title ....." autocomplete="on">
-
-      </section>
-
-      <section class="border">
-
-        <button id="look" type="button" name="button"><i class="fas fa-search"></i></button>
-
-      </section>
+    <section class="line1">
 
     </section>
 
     <main class="border flexIt">
 
-        <% for(let i = 0; i < recipes.results.length; i++){ %>
 
 
-            <section id="info" class="border leftSide" data-id="<%= recipes.results[i].id %>" data-picture="<%= "https://spoonacular.com/recipeImages/" + recipes.results[i].id + "-556x370.jpg" %>">
+        <section class="border story">
 
-              <section class="border">
+          <h1 class="border"><%= summary.title %></h1>
 
-                <figure class="border">
+          <section class="border">
 
-                  <img src="<%= "https://spoonacular.com/recipeImages/" + recipes.results[i].id + "-556x370.jpg" %>" alt="picture"/>
+            <figure class="border">
 
-                </figure>
+              <img id="picture" src="#" alt="picture"/>
 
-              </section>
+            </figure>
 
-              <section class="description border">
+          </section>
 
-                <h1 class="border"><%= recipes.results[i].title %></h1>
+          <p class="border"><%= summary.summary %></p>
 
-                <p class="border"><%= recipes.results[i].readyInMinutes %></p>
-
-              </section>
-
-            </section>
+        </section>
 
 
-        <% } %>
 
     </main>
 
-    <script src="js/recipes.js" type="text/javascript"></script>
+    <script src="js/summary.js" type="text/javascript"></script>
 
   </body>
-
 </html>

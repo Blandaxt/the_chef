@@ -77,6 +77,8 @@ module.exports = function(app, passport, db, multer, ObjectId, querystring, requ
               request.get(options, function(err, response, body) {
                 json = JSON.parse(body);
 
+
+
               console.log("javascript Object Notation: ", json, "limit: ", response.headers);
 
               res.render('recipes.ejs', {
@@ -122,6 +124,12 @@ module.exports = function(app, passport, db, multer, ObjectId, querystring, requ
                request.get(options, function(err, response, body) {
                    json = JSON.parse(body);
                    console.log(json);
+
+                   // json.results.push({
+                   //   title: 'Test Title',
+                   //   readyInMinutes: 10,
+                   //   summary: 'A fake one'
+                   // });
 
                    // res.send(json);
                    res.render('recipes.ejs', {
